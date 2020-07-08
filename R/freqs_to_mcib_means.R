@@ -1,5 +1,5 @@
 #' Computes bracket means using mean-constrained integration over brackets.
-#' @param freqs A vector of counts in income brackets..
+#' @param freqs A vector of counts in income brackets.
 #' @param agg Total income across brackets.
 #' @param bounds A vector of income bracket boundaries.
 #' @return MCIB means
