@@ -2,7 +2,7 @@
 
 # Takes numeric freq vec (just closed bracket freqs) and lower bound vec and returns mcib coords as tibble
 freq_and_bounds_to_mcib_coords <- function(freqs, bounds){
-  return(tibble::tibble(x = (bounds[1:(length(bounds)-1)]+bounds[2:length(bounds)])/2, y = freqs/diff(bounds)))
+  return(as.data.frame(cbind(x = (bounds[1:(length(bounds)-1)]+bounds[2:length(bounds)])/2, y = freqs/diff(bounds))))
 }
 
 
@@ -11,7 +11,7 @@ mcib_coords_to_slopes_ints <- function(points){
 
   points_lst <- split(points %>% as.matrix() %>% unname, seq(nrow(points))) %>% unname
 
-  slopes <- purrr::map(seq_along(points_lst), function(idx){
+  slopes <- lapply(seq_along(points_lst), function(idx){
 
     if(idx != length(points_lst)){
       (points_lst[[idx+1]][2]-points_lst[[idx]][2])/(points_lst[[idx+1]][1]-points_lst[[idx]][1])
@@ -20,7 +20,7 @@ mcib_coords_to_slopes_ints <- function(points){
     }
   })
 
-  slopes <- purrr::map(seq_along(slopes), function(idx){
+  slopes <- sapply(seq_along(slopes), function(idx){
     if(idx != 1 & idx != length(slopes)){
       return((slopes[[idx-1]]+slopes[[idx]])/2)
     }else{
@@ -29,7 +29,7 @@ mcib_coords_to_slopes_ints <- function(points){
   }) %>% unlist
 
 
-  slopes <- purrr::map(seq_along(slopes), function(idx){
+  slopes <- lapply(seq_along(slopes), function(idx){
 
     if(idx == 1){return(0)}else if(idx == length(slopes)){
       return(slopes[idx])
@@ -45,9 +45,9 @@ mcib_coords_to_slopes_ints <- function(points){
 
   }) %>% unlist
 
-  ints <- purrr::map2(slopes, points_lst, function(slope, coords){
+  ints <- Map(function(slope, coords){
     -slope*coords[1] + coords[2]
-  }) %>% unlist
+  }, slopes, points_lst) %>% unlist
 
   return(list(slopes, ints))
 
@@ -57,17 +57,17 @@ mcib_coords_to_slopes_ints <- function(points){
 # Takes lines that cross the x-axis and rotates them at the rel_freq point so that they remain positive over the bracket (new x-intercept is bracket boundary)
 x_adj <- function(slopes_ints, bounds, mcib_coords){
 
-  bad_idx <- which(purrr::pmap(list(slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])), function(m, b, idx){
+  bad_idx <- which(Map(function(m, b, idx){
 
     LB <- bounds[idx]
     UB <- bounds[idx+1]
-
     x_int <- -b/m
+    x_int >= LB & x_int <= UB
 
-    dplyr::between(x_int, LB, UB)
-  }) %>% unlist)
+  }, slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])) %>% unlist)
 
-  purrr::pmap(list(slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])), function(m, b, idx){
+
+  Map(function(m, b, idx){
 
     if(idx %in% bad_idx){
 
@@ -89,8 +89,9 @@ x_adj <- function(slopes_ints, bounds, mcib_coords){
       return(c(m, b))
 
     }
-  }) %>% do.call('rbind', .) %>% tibble::as_tibble(.name_repair = ~make.names(., unique = TRUE)) %>%
-    purrr::map(., ~.x) %>% unname
+  }, slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])) %>%
+    do.call('rbind', .) %>% as.data.frame() %>%
+    lapply(., function(x){x}) %>% unname
 }
 
 
@@ -100,7 +101,7 @@ MCIB_closed_bracket_means <- function(slopes_ints, lower_bounds10, freqs){
   mean_integral <- function(m, b, x){
     return((m/3)*x^3 + (b/2)*x^2)}
 
-  purrr::map(1:(length(lower_bounds10)-1), function(bracket_idx){
+  sapply(1:(length(lower_bounds10)-1), function(bracket_idx){
 
     LB <- (lower_bounds10)[bracket_idx]
     UB <- (lower_bounds10)[bracket_idx+1]
@@ -111,7 +112,7 @@ MCIB_closed_bracket_means <- function(slopes_ints, lower_bounds10, freqs){
     mean_b <- mean_integral(m, b, UB) - mean_integral(m, b, LB)
 
     return(mean_b/freqs[bracket_idx])
-  }) %>% unlist
+  })
 }
 
 
@@ -187,7 +188,7 @@ perc_to_slope <- function(inputs, lorenz_df, coefs, no_cubic = FALSE){
 
   x_nums <- lorenz_df$x
 
-  purrr::map(inputs, function(x){
+  sapply(inputs, function(x){
 
     idx <- which(x < x_nums)[1] - 1
 
@@ -203,6 +204,6 @@ perc_to_slope <- function(inputs, lorenz_df, coefs, no_cubic = FALSE){
 
     }
 
-  }) %>% unlist
+  })
 
 }

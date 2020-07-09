@@ -27,6 +27,6 @@ Derives samples from grouped income data using Lorenz Interpolation.
 freqs_lst <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
 bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
 100000, 125000, 150000, 200000)
-mean_lst <- 50000
+mean_lst <- 66500
 lorenz_interp(freqs_lst, bounds, mean_lst)
 }

@@ -23,6 +23,6 @@ Computes bracket means using mean-constrained integration over brackets.
 bracket_frequencies <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
 bracket_boundaries <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
  60000, 75000, 100000, 125000, 150000, 200000)
-aggregate_income <- sum(bracket_frequencies)*50000
+aggregate_income <- sum(bracket_frequencies)*66500
 freqs_to_mcib_means(bracket_frequencies, aggregate_income, bracket_boundaries)
 }

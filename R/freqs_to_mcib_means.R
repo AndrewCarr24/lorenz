@@ -26,7 +26,7 @@ freqs_to_mcib_means <- function(freqs, agg, bounds){
   closed_bracket_means <- MCIB_closed_bracket_means(slopes_ints, bounds, freqs)
 
   # Storing top bracket mean estimate
-  top_bracket_mean <- (agg - sum(freqs[1:(length(freqs)-1)]*closed_bracket_means))/
+  top_bracket_mean <- (agg - sum(freqs[1:(length(freqs)-1)]*closed_bracket_means, na.rm = T))/
     freqs[length(freqs)]
 
   return(c(closed_bracket_means, top_bracket_mean))

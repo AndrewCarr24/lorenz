@@ -23,24 +23,21 @@ lorenz_interp <- function(freqs_lst, bounds, mean_lst, slope_parm = .9, stat = N
     mean_lst <- list(mean_lst)
   }
 
-  purrr::map2(freqs_lst, mean_lst, function(freqs, mean){
+  Map(function(freqs, mean){
 
     agg <- sum(freqs)*mean
 
     mcib_means <- freqs_to_mcib_means(freqs, agg = agg, bounds = bounds)
     mcib_means[is.infinite(mcib_means)] <- 0
+    mcib_means[is.nan(mcib_means)] <- 0
 
     # Lorenz curve
-    lorenz_df <- tibble::tibble(x = c(0, cumsum(freqs)/sum(freqs)), y = c(0, cumsum(freqs*mcib_means)/sum(freqs*mcib_means)))
+    lorenz_df <- as.data.frame(cbind(x = c(0, cumsum(freqs)/sum(freqs)), y = c(0, cumsum(freqs*mcib_means)/sum(freqs*mcib_means))))
 
-    # Dealing with empty closed bins
-    lorenz_df <- lorenz_df %>% dplyr::filter(!duplicated(x,y))
+    # Dealing with empty bins
+    lorenz_df <- unique(lorenz_df)
 
-    # Dealing with empty open bins
-    if(sum(lorenz_df$x == 1) > 1){
-      lorenz_df <- lorenz_df[1:(which(lorenz_df$x == 1)[1]),]
-    }
-
+    # Getting coefficients of fitted Lorenz curve
     lorenz_coefs <- lorenz_to_coefs(lorenz_df)
 
     # Adding coefs for top cat
@@ -61,6 +58,6 @@ lorenz_interp <- function(freqs_lst, bounds, mean_lst, slope_parm = .9, stat = N
       return(sort(interp_incomes))
     }
 
-  }) %>% unlist
+  }, freqs_lst, mean_lst) %>% unlist
 
 }
