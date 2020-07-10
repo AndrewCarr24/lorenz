@@ -6,10 +6,22 @@ bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60
             100000, 125000, 150000, 200000)
 mean_lst <- 66500
 
-load(system.file("inst/test_vec.rda",package="lorenz"))
 
-test_that("lorenz_interp produces expected result", {
-  expect_equal(lorenz_interp(freqs_lst, bounds, mean_lst), test_vec)
+# Gini Check
+test_that("lorenz_interp Gini check", {
+  expect_equal(round(lorenz::lorenz_interp(freqs_lst, bounds = bounds, mean_lst, stat = 'gini', eta = .5), 5), 0.37079)
+})
+
+
+# Theil Check
+test_that("lorenz_interp Theil check", {
+  expect_equal(round(lorenz_interp(freqs_lst, bounds, mean_lst, stat = 'theil'), 5), 0.23841)
+})
+
+
+# Atkinson Check
+test_that("lorenz_interp Atkinson check", {
+  expect_equal(round(lorenz_interp(freqs_lst, bounds, mean_lst, stat = 'atkinson', eta = .5), 5), 0.12049)
 })
 
 
