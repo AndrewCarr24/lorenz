@@ -13,51 +13,46 @@
 #' lorenz_interp(freqs_lst, bounds, mean_lst)
 #' @export
 #' @importFrom magrittr %>%
-lorenz_interp <- function(freqs_lst, bounds, mean_lst, slope_parm = .9, stat = NA){
+lorenz_interp <- function(freqs, bounds, mean, slope_parm = .9, stat = "gini", eta = NA){
 
-  if(!is.list(freqs_lst)){
-    freqs_lst <- list(freqs_lst)
+  if(stat == "atkinson" & is.na(eta)){
+    stop("Atkinson coefficient requires an eta parameter.")
   }
 
-  if(length(mean_lst) == 1){
-    mean_lst <- list(mean_lst)
+  agg <- sum(freqs)*mean
+
+  mcib_means <- freqs_to_mcib_means(freqs, agg = agg, bounds = bounds)
+  mcib_means[is.infinite(mcib_means)] <- 0
+  mcib_means[is.nan(mcib_means)] <- 0
+
+  # Lorenz curve
+  lorenz_df <- as.data.frame(cbind(x = c(0, cumsum(freqs)/sum(freqs)), y = c(0, cumsum(freqs*mcib_means)/sum(freqs*mcib_means))))
+
+  # Dealing with empty bins
+  lorenz_df <- unique(lorenz_df)
+
+  # Getting coefficients of fitted Lorenz curve
+  lorenz_coefs <- lorenz_to_coefs(lorenz_df)
+
+  # Adding coefs for top cat
+  slope_factor <- slope_parm
+  lorenz_coefs[[(length(lorenz_coefs)+1)]] <- fit_poly_to_top(lorenz_df, lorenz_coefs, slope_factor)
+
+
+  # Number of households
+  N <- sum(freqs)
+
+
+  # Sampling incomes from Lorenz curve
+  interp_incomes <- perc_to_slope(seq(0, 1, 1/N), lorenz_df, lorenz_coefs)*mean
+  interp_incomes[interp_incomes < 1] <- 1
+
+  if(stat == "gini"){
+    return(dineq::gini.wtd(interp_incomes))
+  }else if(stat == "theil"){
+    return(dineq::theil.wtd(interp_incomes))
+  }else if(stat == "atkinson"){
+    return(atkinson_func(interp_incomes, eta))
   }
-
-  Map(function(freqs, mean){
-
-    agg <- sum(freqs)*mean
-
-    mcib_means <- freqs_to_mcib_means(freqs, agg = agg, bounds = bounds)
-    mcib_means[is.infinite(mcib_means)] <- 0
-    mcib_means[is.nan(mcib_means)] <- 0
-
-    # Lorenz curve
-    lorenz_df <- as.data.frame(cbind(x = c(0, cumsum(freqs)/sum(freqs)), y = c(0, cumsum(freqs*mcib_means)/sum(freqs*mcib_means))))
-
-    # Dealing with empty bins
-    lorenz_df <- unique(lorenz_df)
-
-    # Getting coefficients of fitted Lorenz curve
-    lorenz_coefs <- lorenz_to_coefs(lorenz_df)
-
-    # Adding coefs for top cat
-    slope_factor <- slope_parm
-    lorenz_coefs[[(length(lorenz_coefs)+1)]] <- fit_poly_to_top(lorenz_df, lorenz_coefs, slope_factor)
-
-
-    # Number of households
-    N <- sum(freqs)
-
-    interp_incomes <- perc_to_slope(seq(0, 1, 1/N), lorenz_df, lorenz_coefs)*mean
-
-    interp_incomes[interp_incomes < 1] <- 1
-
-    if(is.na(stat)){
-      return(sort(interp_incomes))
-    }else if(stat == "gini"){
-      return(sort(interp_incomes))
-    }
-
-  }, freqs_lst, mean_lst) %>% unlist
 
 }
