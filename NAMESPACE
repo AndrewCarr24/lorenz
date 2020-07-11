@@ -2,4 +2,5 @@
 
 export(freqs_to_mcib_means)
 export(lorenz_interp)
+export(mcib)
 importFrom(magrittr,"%>%")
