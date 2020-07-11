@@ -116,7 +116,122 @@ MCIB_closed_bracket_means <- function(slopes_ints, lower_bounds10, freqs){
 }
 
 
+
+
+
+# Takes rescaled slopes_ints, rescaled bounds (pdf scale), and F_x and returns polynomial coeficients of CDF
+# of each bracket
+slopes_ints_rescaled_to_poly_coefs <- function(slopes_ints_rescaled, bounds, F_x){
+
+  Map(function(a, b, x_0, y_0){
+
+    c <- y_0 - (a*x_0^2)/2 - b*x_0
+
+    return(c(a,b,c))
+  }, slopes_ints_rescaled[[1]], slopes_ints_rescaled[[2]], bounds, F_x)
+}
+
+
+
+
+# Takes top bracket mean and returns rescaled parameters of the pareto distribution
+top_bracket_mean_to_rescaled_pareto_parms <- function(top_bracket_mean, bounds, N){
+
+  alpha <- top_bracket_mean/(top_bracket_mean-bounds[length(bounds)])
+  beta <- (bounds/sqrt(N))[length(bounds)]
+
+  return(c(alpha, beta))
+}
+
+
+# Takes a number between 0 and 1 and returns draw from the MCIB-estimated pdf
+inverse_cdf_full <- function(inputs, bounds, poly_coefs, pareto_parms, F_x){
+
+  sapply(inputs, function(y){
+
+    idx <- which(sapply(seq_along(bounds[1:(length(bounds)-1)]), function(z){
+
+      dplyr::between(y, bounds[z], bounds[z+1])
+
+    }))
+
+    if(idx < (length(bounds)-1)){
+
+      a_b_c <- poly_coefs[[idx]]
+
+      a <- a_b_c[1]
+      b <- a_b_c[2]
+      c <- a_b_c[3]
+
+      if(a == 0){
+
+        return((y - c)/b)
+
+      }else{
+
+        return(inverse_quadratic(a,b,c,y)[1])
+      }
+
+    }else{
+
+      alpha <- pareto_parms[1]
+      beta <- pareto_parms[2]
+
+      return(inverse_pareto_cdf(alpha, beta, 1-F_x[length(F_x)], y))
+
+    }
+
+  })
+
+}
+
+# Helper - inverse of the quadratic formula
+inverse_quadratic <- function(a,b,c, x_0){
+  a <- a/2
+  c <- c - x_0
+  return(c((-b+sqrt(b^2-4*a*c))/(2*a), (-b-sqrt(b^2-4*a*c))/(2*a)))
+}
+
+# Inverse cdf of pareto used for transform sampling top bracket
+inverse_pareto_cdf <- function(alpha, beta, top_prop, input){
+
+  # Capping input at .995 (following MCIB)
+  input <- min(input, .995)
+
+  # Scaling input
+  input <- (input-(1-top_prop))/(1-(1-top_prop))
+
+  return(beta/(1-input)^(1/alpha))
+}
+
+
+
+
+
 # Auxiliary Functions for lorenz_interp #
+freqs_to_mcib_means <- function(freqs, bounds, mean){
+
+  N <- sum(freqs)
+  agg <- N*mean
+  F_x <- (cumsum(freqs)/sum(freqs))[1:(length(freqs)-1)]
+
+  mcib_coords <- freq_and_bounds_to_mcib_coords(freqs[1:(length(freqs)-1)], bounds)
+  slopes_ints <- mcib_coords_to_slopes_ints(mcib_coords)
+
+  # Fixing lines that cross x-axis
+  slopes_ints <-  x_adj(slopes_ints, bounds, mcib_coords)
+
+  # Storing closed bracket means
+  closed_bracket_means <- MCIB_closed_bracket_means(slopes_ints, bounds, freqs)
+
+  # Storing top bracket mean estimate
+  top_bracket_mean <- (agg - sum(freqs[1:(length(freqs)-1)]*closed_bracket_means, na.rm = T))/
+    freqs[length(freqs)]
+
+  return(c(closed_bracket_means, top_bracket_mean))
+
+}
+
 
 # Takes tibble with Lorenz curve coordinates and return list of coefficients of functions fit to these coordinates
 lorenz_to_coefs <- function(lorenz_df){
