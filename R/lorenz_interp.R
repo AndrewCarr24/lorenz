@@ -1,16 +1,16 @@
-#' Derives samples from grouped income data using Lorenz Interpolation.
-#' @param freqs_lst A vector of counts in income brackets.
+#' Computes income inequality statistics derived with Lorenz interpolation.
+#' @param freqs A vector of counts in income brackets.
 #' @param bounds A vector of income bracket boundaries.
-#' @param mean_lst Grand mean of income distribution.
+#' @param mean Grand mean of income distribution.
 #' @param slope_parm (default = .9) Slope parameter that influences the shape of the function fitted to the Lorenz curve.
 #' @param stat (optional) Return income statistic instead of sample incomes.
-#' @return A vector of exact incomes sampled from income distribution.
+#' @return Income inequality statistics derived with Lorenz interpolation.
 #' @examples
-#' freqs_lst <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
-#' bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
+#' ex_freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
+#' ex_bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
 #' 100000, 125000, 150000, 200000)
-#' mean_lst <- 66500
-#' lorenz_interp(freqs_lst, bounds, mean_lst)
+#' ex_mean <- 66500
+#' lorenz_interp(ex_freqs, ex_bounds, ex_mean)
 #' @export
 #' @importFrom magrittr %>%
 lorenz_interp <- function(freqs, bounds, mean, slope_parm = .9, stat = "gini", eta = NA){
@@ -19,9 +19,7 @@ lorenz_interp <- function(freqs, bounds, mean, slope_parm = .9, stat = "gini", e
     stop("Atkinson coefficient requires an eta parameter.")
   }
 
-  agg <- sum(freqs)*mean
-
-  mcib_means <- freqs_to_mcib_means(freqs, agg = agg, bounds = bounds)
+  mcib_means <- freqs_to_mcib_means(freqs, bounds, mean)
   mcib_means[is.infinite(mcib_means)] <- 0
   mcib_means[is.nan(mcib_means)] <- 0
 
@@ -44,7 +42,7 @@ lorenz_interp <- function(freqs, bounds, mean, slope_parm = .9, stat = "gini", e
 
 
   # Sampling incomes from Lorenz curve
-  interp_incomes <- perc_to_slope(seq(0, 1, 1/N), lorenz_df, lorenz_coefs)*mean
+  interp_incomes <- perc_to_slope(seq(0, 1, 1/(N)), lorenz_df, lorenz_coefs)*mean
   interp_incomes[interp_incomes < 1] <- 1
 
   if(stat == "gini"){
