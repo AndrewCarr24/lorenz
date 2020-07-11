@@ -2,27 +2,27 @@
 % Please edit documentation in R/freqs_to_mcib_means.R
 \name{freqs_to_mcib_means}
 \alias{freqs_to_mcib_means}
-\title{Computes bracket means using mean-constrained integration over brackets.}
+\title{Computes income inequality statistics derived with mean-constrained integration over brackets.}
 \usage{
-freqs_to_mcib_means(freqs, agg, bounds)
+freqs_to_mcib_means(freqs, bounds, mean)
 }
 \arguments{
 \item{freqs}{A vector of counts in income brackets.}
 
-\item{agg}{Total income across brackets.}
-
 \item{bounds}{A vector of income bracket boundaries.}
+
+\item{mean}{Grand mean of income distribution.}
 }
 \value{
-MCIB means
+Income inequality statistics derived with mean-constrained integration over brackets.
 }
 \description{
-Computes bracket means using mean-constrained integration over brackets.
+Computes income inequality statistics derived with mean-constrained integration over brackets.
 }
 \examples{
 bracket_frequencies <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
 bracket_boundaries <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
  60000, 75000, 100000, 125000, 150000, 200000)
-aggregate_income <- sum(bracket_frequencies)*66500
-freqs_to_mcib_means(bracket_frequencies, aggregate_income, bracket_boundaries)
+mean <- 66500
+mcib(bracket_frequencies, bracket_boundaries, mean)
 }

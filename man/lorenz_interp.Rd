@@ -2,31 +2,31 @@
 % Please edit documentation in R/lorenz_interp.R
 \name{lorenz_interp}
 \alias{lorenz_interp}
-\title{Derives samples from grouped income data using Lorenz Interpolation.}
+\title{Computes income inequality statistics derived with Lorenz interpolation.}
 \usage{
-lorenz_interp(freqs_lst, bounds, mean_lst, slope_parm = 0.9, stat = NA)
+lorenz_interp(freqs, bounds, mean, slope_parm = 0.9, stat = "gini", eta = NA)
 }
 \arguments{
-\item{freqs_lst}{A vector of counts in income brackets.}
+\item{freqs}{A vector of counts in income brackets.}
 
 \item{bounds}{A vector of income bracket boundaries.}
 
-\item{mean_lst}{Grand mean of income distribution.}
+\item{mean}{Grand mean of income distribution.}
 
 \item{slope_parm}{(default = .9) Slope parameter that influences the shape of the function fitted to the Lorenz curve.}
 
 \item{stat}{(optional) Return income statistic instead of sample incomes.}
 }
 \value{
-A vector of exact incomes sampled from income distribution.
+Income inequality statistics derived with Lorenz interpolation.
 }
 \description{
-Derives samples from grouped income data using Lorenz Interpolation.
+Computes income inequality statistics derived with Lorenz interpolation.
 }
 \examples{
-freqs_lst <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
+freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
 bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
 100000, 125000, 150000, 200000)
-mean_lst <- 66500
-lorenz_interp(freqs_lst, bounds, mean_lst)
+mean <- 66500
+lorenz_interp(freqs, bounds, mean)
 }
