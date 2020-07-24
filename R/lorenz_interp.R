@@ -4,6 +4,7 @@
 #' @param mean Grand mean of income distribution.
 #' @param slope_parm (default = .9) Slope parameter that influences the shape of the function fitted to the Lorenz curve.
 #' @param stat (optional) Return income statistic instead of sample incomes.
+#' @param eta (optional) Parameter for Atkinson's coefficient.
 #' @return Income inequality statistics derived with Lorenz interpolation.
 #' @examples
 #' ex_freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
@@ -31,11 +32,11 @@ lorenz_interp <- function(freqs, bounds, mean, slope_parm = .9, stat = "gini", e
 
   # Getting coefficients of fitted Lorenz curve
   lorenz_coefs <- lorenz_to_coefs(lorenz_df)
+  # lorenz_coefs <- lorenz_to_coefs2(lorenz_df, bounds, mean)
 
   # Adding coefs for top cat
   slope_factor <- slope_parm
   lorenz_coefs[[(length(lorenz_coefs)+1)]] <- fit_poly_to_top(lorenz_df, lorenz_coefs, slope_factor)
-
 
   # Number of households
   N <- sum(freqs)

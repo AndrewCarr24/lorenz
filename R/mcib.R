@@ -2,6 +2,8 @@
 #' @param freqs A vector of counts in income brackets.
 #' @param bounds A vector of income bracket boundaries.
 #' @param mean Grand mean of income distribution.
+#' @param stat (optional) Return income statistic instead of sample incomes.
+#' @param eta (optional) Parameter for Atkinson's coefficient.
 #' @return Income inequality statistics derived with mean-constrained integration over brackets.
 #' @examples
 #' ex_freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
@@ -11,7 +13,8 @@
 #' mcib(ex_freqs, ex_bounds, ex_mean)
 #' @export
 #' @importFrom magrittr %>%
-mcib <- function(freqs, bounds, mean, stat = 'gini'){
+#' @importFrom stats runif
+mcib <- function(freqs, bounds, mean, stat = 'gini', eta = NA){
 
   N <- sum(freqs)
   agg <- mean*N
