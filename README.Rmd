@@ -50,4 +50,4 @@ lorenz_interp(frequencies, boundaries, mean)
 
 ## Help 
 
-If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/datadiarist/lorenz/issues).
+If you encounter a bug, please file an issue with a reproducible example on [GitHub](https://github.com/datadiarist/lorenz/issues).
