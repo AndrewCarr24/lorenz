@@ -8,3 +8,8 @@ The package consists of two main functions - mcib and lorenz_interp.  mcib, whic
 ## References 
 
 Jargowsky, Paul A., and Christopher A. Wheeler. 2018. “Estimating Income Statistics from Grouped Data: Mean-Constrained Integration over Brackets.” Sociological Methodology 48(1):337–74.
+
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://travis-ci.com/datadiarist/lorenz)
+<!-- badges: end -->
