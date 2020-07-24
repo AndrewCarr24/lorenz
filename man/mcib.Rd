@@ -2,9 +2,9 @@
 % Please edit documentation in R/mcib.R
 \name{mcib}
 \alias{mcib}
-\title{Takes number of draws, freqs, bounds, and aggregate for region and returns sample of incomes.}
+\title{Derives income inequality statitics using mean-constrained integration over brackets.}
 \usage{
-mcib(freqs, bounds, mean)
+mcib(freqs, bounds, mean, stat = "gini", eta = NA)
 }
 \arguments{
 \item{freqs}{A vector of counts in income brackets.}
@@ -12,17 +12,21 @@ mcib(freqs, bounds, mean)
 \item{bounds}{A vector of income bracket boundaries.}
 
 \item{mean}{Grand mean of income distribution.}
+
+\item{stat}{(optional) Return income statistic instead of sample incomes.}
+
+\item{eta}{(optional) Parameter for Atkinson's coefficient.}
 }
 \value{
 Income inequality statistics derived with mean-constrained integration over brackets.
 }
 \description{
-Takes number of draws, freqs, bounds, and aggregate for region and returns sample of incomes.
+Derives income inequality statitics using mean-constrained integration over brackets.
 }
 \examples{
-bracket_frequencies <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
-bracket_boundaries <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
+ex_freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
+ex_bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
  60000, 75000, 100000, 125000, 150000, 200000)
-mean <- 66500
-mcib(bracket_frequencies, bracket_boundaries, mean)
+ex_mean <- 66500
+mcib(ex_freqs, ex_bounds, ex_mean)
 }
