@@ -4,10 +4,20 @@
 
 # lorenz 
 
-lorenz is an R package that provides two methods for computing income inequality statistcs from grouped income data.  This is usually the format in which income data is published.
+## Overview
 
-The package consists of two main functions - mcib and lorenz_interp.  mcib, which stands for mean-constrained integration over brackets, is an implementation of a technique described in Jargowsky and Wheeler's 2018 paper.  lorenz_interp, which stands for Lorenz interpolation, is based on a new method I developed that computes income statistics from sampled exact incomes based on an interpolated Lorenz curve.  
+The lorenz package provides two methods for computing income inequality statistics from grouped income data.  This is the format in which the U.S. Census publishes income data.
 
+The package consists of two main functions - mcib and lorenz_interp.  mcib, which stands for mean-constrained integration over brackets, estimates income inequality using a technique described in a 2018 paper from Jargowsky and Wheeler.  lorenz_interp, which stands for Lorenz interpolation, is based on a new method I developed that estimating income inequality using an interpolated Lorenz curve.  
+
+## Installation
+
+You can currently install the development version of lorenz from Github.
+
+``` r
+# install.packages("devtools")
+devtools::install_github("datadiarist/lorenz")
+```
 
 ## References 
 
