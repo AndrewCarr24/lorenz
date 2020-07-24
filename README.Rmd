@@ -24,7 +24,7 @@ options(tibble.print_min = 5, tibble.print_max = 5)
 
 The U.S. Census publishes income data as counts in income brackets.  Estimating income inequality from grouped income data requires that certain assumptions be made about the distribution of incomes within these brackets.  The lorenz package provides two methods for computing income inequality statistics using grouped income data.  
 
-The package consists of two main functions - mcib and lorenz_interp.  mcib, which stands for mean-constrained integration over brackets, estimates income inequality using a technique described in a 2018 paper from Jargowsky and Wheeler.  lorenz_interp, which stands for Lorenz interpolation, is based on a new method I developed that estimates income inequality using an interpolated Lorenz curve. 
+The package consists of main functions -  lorenz_interp and mcib. lorenz_interp, which stands for Lorenz interpolation, is based on a new method I developed that estimates income inequality using an interpolated Lorenz curve. mcib, which stands for mean-constrained integration over brackets, estimates income inequality using a technique described in a 2018 paper from Jargowsky and Wheeler.  
 
 ## Installation
 
