@@ -67,7 +67,7 @@ x_adj <- function(slopes_ints, bounds, mcib_coords){
   }, slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])) %>% unlist)
 
 
-  Map(function(m, b, idx){
+  map_output <- Map(function(m, b, idx){
 
     if(idx %in% bad_idx){
 
@@ -89,9 +89,9 @@ x_adj <- function(slopes_ints, bounds, mcib_coords){
       return(c(m, b))
 
     }
-  }, slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]])) %>%
-    do.call('rbind', .) %>% as.data.frame() %>%
-    lapply(., function(x){x}) %>% unname
+  }, slopes_ints[[1]], slopes_ints[[2]], seq_along(slopes_ints[[1]]))
+
+  lapply(do.call('rbind', map_output) %>% as.data.frame(), function(x){x}) %>% unname
 }
 
 
@@ -151,8 +151,8 @@ inverse_cdf_full <- function(inputs, bounds, poly_coefs, pareto_parms, F_x){
 
     idx <- which(sapply(seq_along(bounds[1:(length(bounds)-1)]), function(z){
 
-      dplyr::between(y, bounds[z], bounds[z+1])
-
+      # dplyr::between(y, bounds[z], bounds[z+1])
+      y > bounds[z] & y < bounds[z+1]
     }))
 
     if(idx < (length(bounds)-1)){
