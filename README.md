@@ -1,5 +1,5 @@
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/github/datadiarist/lorenz.svg?branch=master)](https://travis-ci.com/github/datadiarist/lorenz)
+[![Travis build status](https://travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://travis-ci.com/github/datadiarist/lorenz)
 <!-- badges: end -->
 
 # lorenz 
