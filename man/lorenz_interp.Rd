@@ -16,6 +16,8 @@ lorenz_interp(freqs, bounds, mean, slope_parm = 0.9, stat = "gini", eta = NA)
 \item{slope_parm}{(default = .9) Slope parameter that influences the shape of the function fitted to the Lorenz curve.}
 
 \item{stat}{(optional) Return income statistic instead of sample incomes.}
+
+\item{eta}{(optional) Parameter for Atkinson's coefficient.}
 }
 \value{
 Income inequality statistics derived with Lorenz interpolation.
@@ -24,9 +26,9 @@ Income inequality statistics derived with Lorenz interpolation.
 Computes income inequality statistics derived with Lorenz interpolation.
 }
 \examples{
-freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
-bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
+ex_freqs <- c(45, 31, 33, 27, 43, 40, 51, 50, 63, 97, 121, 132, 64, 54, 32, 12)
+ex_bounds <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 75000,
 100000, 125000, 150000, 200000)
-mean <- 66500
-lorenz_interp(freqs, bounds, mean)
+ex_mean <- 66500
+lorenz_interp(ex_freqs, ex_bounds, ex_mean)
 }
