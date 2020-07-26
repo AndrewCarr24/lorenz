@@ -1,6 +1,6 @@
 Package: lorenz
 Type: Package
-Title: Derives Samples from Grouped Income Data with Lorenz Interpolation
+Title: Tools for Deriving Income Inequality Estimates from Grouped Income Data
 Version: 0.1.0
 Authors@R: person(given = "Andrew",
              family = "Carr",
