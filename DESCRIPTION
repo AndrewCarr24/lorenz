@@ -3,7 +3,7 @@ Type: Package
 Title: Derives Samples from Grouped Income Data with Lorenz Interpolation
 Version: 0.1.0
 Authors@R: as.person("Andrew Carr <andrew.carr@duke.edu> [aut,cre]")
-Description: The lorenz package provides a method of deriving samples and estimating 
+Description: Provides a method of deriving samples and estimating 
     statistics from grouped income data, such as the income data provided in the Census.
 License: MIT + file LICENSE
 Encoding: UTF-8
