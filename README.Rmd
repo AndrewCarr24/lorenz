@@ -17,7 +17,7 @@ options(tibble.print_min = 5, tibble.print_max = 5)
 # lorenz
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://travis-ci.com/datadiarist/lorenz.svg?token=FKe5Y6rhxscJvKHWjpxN&branch=master)
+[![Travis build status](https://api.travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://api.travis-ci.com/datadiarist/lorenz.svg?token=FKe5Y6rhxscJvKHWjpxN&branch=master)
 <!-- badges: end -->
 
 ## Overview
