@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://travis-ci.com/datadiarist/lorenz.svg?token=FKe5Y6rhxscJvKHWjpxN&branch=master)
+status](https://api.travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://api.travis-ci.com/datadiarist/lorenz.svg?token=FKe5Y6rhxscJvKHWjpxN&branch=master)
 <!-- badges: end -->
 
 ## Overview
@@ -17,12 +17,12 @@ certain assumptions be made about the distribution of incomes within
 these brackets. The lorenz package provides two methods for computing
 income inequality statistics using grouped income data.
 
-The package consists of two main functions - mcib and lorenz\_interp.
-mcib, which stands for mean-constrained integration over brackets,
-estimates income inequality using a technique described in a 2018 paper
-from Jargowsky and Wheeler. lorenz\_interp, which stands for Lorenz
-interpolation, is based on a new method I developed that estimates
-income inequality using an interpolated Lorenz curve.
+The package consists of main functions - lorenz\_interp and mcib.
+lorenz\_interp, which stands for Lorenz interpolation, is based on a new
+method I developed that estimates income inequality using an
+interpolated Lorenz curve. mcib, which stands for mean-constrained
+integration over brackets, estimates income inequality using a technique
+described in a 2018 paper from Jargowsky and Wheeler.
 
 ## Installation
 
@@ -69,7 +69,7 @@ parameters - frequencies, boundaries, and a distribution mean.
 ``` r
 # MCIB Gini
 mcib(frequencies, boundaries, mean_income)
-#> [1] 0.3619441
+#> [1] 0.3584898
 
 # MCIB Theil
 mcib(frequencies, boundaries, mean_income, stat = 'theil')
