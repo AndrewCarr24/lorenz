@@ -195,11 +195,11 @@ inverse_quadratic <- function(a,b,c, x_0){
 # Inverse cdf of pareto used for transform sampling top bracket
 inverse_pareto_cdf <- function(alpha, beta, top_prop, input){
 
-  # Capping input at .995 (following MCIB)
-  input <- min(input, .995)
-
   # Scaling input
   input <- (input-(1-top_prop))/(1-(1-top_prop))
+      
+  # Capping input at .995 (following MCIB)
+  input <- min(input, .995)
 
   return(beta/(1-input)^(1/alpha))
 }
