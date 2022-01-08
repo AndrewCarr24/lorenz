@@ -197,19 +197,19 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
   # Get incomes from each bin
   get_unweighted_incs <- function(lorenz_df, lorenz_coefs, num_cats, num_splits, G){
 
-    map(1:num_cats, function(idx_main){
+    purrr::map(1:num_cats, function(idx_main){
 
       if(length(lorenz_coefs[[idx_main]]) == 3){
 
         xs <- seq(lorenz_df$x[idx_main], lorenz_df$x[idx_main+1], (lorenz_df$x[idx_main+1]-lorenz_df$x[idx_main])/num_splits)
         ys <- lorenz_coefs[[idx_main]][1]*xs^2 + lorenz_coefs[[idx_main]][2]*xs + lorenz_coefs[[idx_main]][3]
-        slopes <- map(1:num_splits, function(idx){ (ys[idx+1]-ys[idx])/(xs[idx+1]-xs[idx]) }) %>% unlist
+        slopes <- purrr::map(1:num_splits, function(idx){ (ys[idx+1]-ys[idx])/(xs[idx+1]-xs[idx]) }) %>% unlist
 
       }else if(length(lorenz_coefs[[idx_main]]) == 4){
 
         xs <- seq(lorenz_df$x[idx_main], lorenz_df$x[idx_main+1], (lorenz_df$x[idx_main+1]-lorenz_df$x[idx_main])/num_splits)
         ys <- lorenz_coefs[[idx_main]][1]*xs^3 + lorenz_coefs[[idx_main]][2]*xs^2 + lorenz_coefs[[idx_main]][3]*xs + lorenz_coefs[[idx_main]][4]
-        slopes <- map(1:num_splits, function(idx){ (ys[idx+1]-ys[idx])/(xs[idx+1]-xs[idx]) }) %>% unlist
+        slopes <- purrr::map(1:num_splits, function(idx){ (ys[idx+1]-ys[idx])/(xs[idx+1]-xs[idx]) }) %>% unlist
 
       }
 
@@ -242,7 +242,13 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
 
     incs <- rep(1, length(inc_lst %>% unlist)) * rep(wts,each=100)
     marker <- cumsum(incs)/sum(incs)
-    quants <- purrr::map(c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
+    quants <- purrr::
+    
+    
+    
+    
+    
+    (c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
     wts_tot <- sum(incs_fin * wts_lng)
 
     is_20 <- sum(incs_fin[incs_fin < quants[1]] * wts_lng[incs_fin < quants[1]])/wts_tot
@@ -269,7 +275,7 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
   num_splits <- 100
   inc_lst <- get_unweighted_incs(lorenz_df, lorenz_coefs, length(lorenz_coefs), num_splits, G)
   wts <- diff(lorenz_df$x)
-  inc_lst <- map(inc_lst, function(incs){ map(incs, function(inc){if(inc<0){0}else{inc}}) %>% unlist})
+  inc_lst <- purrr::map(inc_lst, function(incs){ purrr::map(incs, function(inc){if(inc<0){0}else{inc}}) %>% unlist})
 
   # Estimating income statistics from weighted exact incomes
   if(stat == "gini"){
@@ -300,11 +306,11 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
 
     incs <- rep(1, length(inc_lst %>% unlist)) * rep(wts,each=100)
     marker <- cumsum(incs)/sum(incs)
-    map(c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
+    purrr::map(c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
 
   }else if(stat == "bin_means"){
 
-    map(inc_lst, ~mean(.x)) %>% unlist
+    purrr::map(inc_lst, ~mean(.x)) %>% unlist
 
   }
 
