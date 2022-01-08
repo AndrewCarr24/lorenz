@@ -19,7 +19,8 @@ Imports:
     magrittr,
     dineq,
     purrr,
-    dplyr
+    dplyr,
+    tibble
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
