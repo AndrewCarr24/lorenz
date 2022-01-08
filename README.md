@@ -52,10 +52,10 @@ boundaries <- c(0, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000
 mean_income <- 66500
 
 # The Gini coefficient is given by default 
-lorenz_interp(frequencies, boundaries, mean_income)
-#> [1] 0.3707927
+lorenz_int(frequencies, boundaries, mean_income)
+#> [1] 0.3723541
 
 # Use the stat parameter to specify the inequality measure (gini, theil, or atkinson)
 lorenz_int(frequencies, boundaries, mean_income, stat = 'theil')
-#> [1] 0.238408
+#> [1] 0.2538687
 ```
