@@ -260,7 +260,7 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
   ##########################
 
   # Get lorenz curve parameters (lorenz_df is x coordinates of LC which are known)
-  lorenz_df <- tibble(x = c(0, cumsum(freqs)/sum(freqs))) %>% dplyr::distinct()
+  lorenz_df <- tibble::tibble(x = c(0, cumsum(freqs)/sum(freqs))) %>% dplyr::distinct()
 
   # Getting LC parameters
   lorenz_coefs <- lorenz_to_coefs(lorenz_df = lorenz_df, slope_parm = slope_parm, G = G, bounds = bounds)
