@@ -17,7 +17,9 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     magrittr,
-    dineq
+    dineq,
+    purrr,
+    dplyr
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
