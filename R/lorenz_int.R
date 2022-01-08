@@ -242,7 +242,7 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
 
     incs <- rep(1, length(inc_lst %>% unlist)) * rep(wts,each=100)
     marker <- cumsum(incs)/sum(incs)
-    quants <- map(c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
+    quants <- purrr::map(c(.2, .4, .6, .8, .95), ~(inc_lst %>% unlist)[which(marker > .x)[1]]) %>% unlist
     wts_tot <- sum(incs_fin * wts_lng)
 
     is_20 <- sum(incs_fin[incs_fin < quants[1]] * wts_lng[incs_fin < quants[1]])/wts_tot
@@ -260,7 +260,7 @@ lorenz_int <- function(freqs, bounds, G, stat = "gini", slope_parm = .9){
   ##########################
 
   # Get lorenz curve parameters (lorenz_df is x coordinates of LC which are known)
-  lorenz_df <- tibble(x = c(0, cumsum(freqs)/sum(freqs))) %>% distinct()
+  lorenz_df <- tibble(x = c(0, cumsum(freqs)/sum(freqs))) %>% dplyr::distinct()
 
   # Getting LC parameters
   lorenz_coefs <- lorenz_to_coefs(lorenz_df = lorenz_df, slope_parm = slope_parm, G = G, bounds = bounds)
