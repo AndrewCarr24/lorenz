@@ -3,28 +3,23 @@
 
 # lorenz
 
-<!-- badges: start -->
-
-[![Travis build
-status](https://api.travis-ci.com/datadiarist/lorenz.svg?branch=master)](https://api.travis-ci.com/datadiarist/lorenz.svg?token=FKe5Y6rhxscJvKHWjpxN&branch=master)
-<!-- badges: end -->
 
 ## Overview
 
-The U.S. Census publishes income data as counts in income brackets.
+The U.S. Census publishes income data as counts in income bins.
 Estimating income inequality from grouped income data requires that
 certain assumptions be made about the distribution of incomes within
-these brackets. The lorenz package provides a methodsfor computing
+these bins. The lorenz package provides a method for computing
 income inequality statistics using grouped income data.
 
-The package consists of one functions- lorenz\_int.
+The package consists of one function - lorenz\_int.
 lorenz\_int, which stands for Lorenz interpolation, is based on a new
 method I developed that estimates income inequality using an
 interpolated Lorenz curve.
 
 ## Installation
 
-You can currently install the development version of lorenz from Github.
+To install lorenz, run the following code in R.
 
 ``` r
 # install.packages("devtools")
@@ -35,9 +30,9 @@ devtools::install_github("datadiarist/lorenz")
 
 The main function of the lorenz package is lorenz\_interp. This function
 requires three arguments - a vector giving the number of
-people/households in each bracket, a vector giving the bracket
+people/households in each bracket, a vector giving the bin income
 boundaries, and a number specifying the income distribution mean.
-Following previous research, the distribution described by the income
+The distribution described by the income
 boundaries is assumed to be bounded at the bottom and unbounded at the
 top. For instance, the boundaries in the example below specify a
 distribution whose bottom income bracket is $0-10000 and whose top
