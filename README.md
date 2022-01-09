@@ -23,7 +23,7 @@ To install lorenz, run the following code in R.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("datadiarist/lorenz")
+devtools::install_github("AndrewCarr24/lorenz")
 ```
 
 ## Usage
