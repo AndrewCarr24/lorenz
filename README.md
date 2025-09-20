@@ -28,7 +28,7 @@ devtools::install_github("AndrewCarr24/lorenz")
 
 ## Usage
 
-The main function of the lorenz package is lorenz\_interp. This function
+The main function of the lorenz package is lorenz\_int. This function
 requires three arguments - a vector giving the number of
 people/households in each bracket, a vector giving the bin income
 boundaries, and a number specifying the income distribution mean.
